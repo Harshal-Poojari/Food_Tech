@@ -172,53 +172,157 @@ class _HomeScreenState extends State<HomeScreen>
       floating: false,
       pinned: true,
       stretch: true,
-      backgroundColor: AppTheme.primaryColor,
+      backgroundColor: Colors.white,
+      elevation: 0,
       leading: IconButton(
-        icon: const Icon(Icons.menu, color: Colors.white),
+        icon: const Icon(Icons.menu, color: AppTheme.primaryColor),
         onPressed: () => _scaffoldKey.currentState?.openDrawer(),
       ),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.search, color: AppTheme.primaryColor),
+          onPressed: () {
+            // Show search functionality
+          },
+        ),
+        IconButton(
+          icon: const Icon(Icons.notifications_outlined,
+              color: AppTheme.primaryColor),
+          onPressed: () {
+            // Show notifications
+          },
+        ),
+      ],
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
-        title: custom_animations.AnimatedEntrance.fadeInUp(
-          child: const Text(
-            'Food Scanner',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+        title: _buildInteractiveTitle(),
         background: Stack(
           fit: StackFit.expand,
           children: [
-            Container(decoration: BackgroundThemes.diagonalGradient),
-            CustomPaint(
-              painter: _FoodPatternPainter(),
-              child: Container(),
-            ),
-            Opacity(
-              opacity: 0.7,
-              child: Image.asset(
-                'assets/backgrounds/food_background.jpg',
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return const SizedBox.shrink();
-                },
-              ),
-            ),
+            // Light theme background
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.transparent,
-                    Colors.black.withOpacity(0.7),
+                    Colors.white,
+                    AppTheme.primaryLightColor.withOpacity(0.3),
                   ],
                 ),
               ),
             ),
+            // Animated food pattern
+            CustomPaint(
+              painter: _FoodPatternPainter(),
+              child: Container(),
+            ),
+            // Subtle white overlay for better text contrast
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 80,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.white.withOpacity(0.0),
+                      Colors.white.withOpacity(0.8),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
+        ),
+      ),
+    );
+  }
+
+  // Interactive animated title
+  Widget _buildInteractiveTitle() {
+    return MouseRegion(
+      onEnter: (_) {
+        // Handle hover effect if needed
+      },
+      child: GestureDetector(
+        onTap: () {
+          // Optional: Do something fun when title is tapped
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('Welcome to Food Scanner!'),
+              backgroundColor: AppTheme.primaryColor,
+              duration: const Duration(seconds: 1),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Food icon with rotation animation
+              Icon(
+                Icons.restaurant_menu,
+                color: AppTheme.primaryColor,
+                size: 24,
+              )
+                  .animate(
+                    onPlay: (controller) => controller.repeat(),
+                  )
+                  .rotate(
+                    duration: 3.seconds,
+                    begin: 0,
+                    end: 0.05,
+                    curve: Curves.easeInOut,
+                  )
+                  .then()
+                  .rotate(
+                    duration: 3.seconds,
+                    begin: 0.05,
+                    end: 0,
+                    curve: Curves.easeInOut,
+                  ),
+              const SizedBox(width: 8),
+              // Stylish text with individual character animations
+              Wrap(
+                children: 'Food Scanner'.split('').map((char) {
+                  return char == ' '
+                      ? const SizedBox(width: 8)
+                      : Text(
+                          char,
+                          style: TextStyle(
+                            color: AppTheme.primaryDarkColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        )
+                          .animate(
+                            onPlay: (controller) => controller.repeat(),
+                            delay:
+                                (0.1 * ('Food Scanner'.indexOf(char))).seconds,
+                          )
+                          .scaleXY(
+                            begin: 1.0,
+                            end: 1.1,
+                            duration: 2.seconds,
+                            curve: Curves.easeInOut,
+                          )
+                          .then()
+                          .scaleXY(
+                            begin: 1.1,
+                            end: 1.0,
+                            duration: 2.seconds,
+                            curve: Curves.easeInOut,
+                          );
+                }).toList(),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -230,30 +334,117 @@ class _HomeScreenState extends State<HomeScreen>
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            custom_animations.AnimatedEntrance.fadeInLeft(
-              child: Text(
-                'Welcome to Food Scanner',
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(fontWeight: FontWeight.bold),
-              ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: () {
+          // Add tap interaction to welcome card
+          final messages = [
+            'Get detailed nutritional information!',
+            'Discover what\'s in your food!',
+            'Track your eating habits!',
+            'Find allergens instantly!'
+          ];
+          final random = Random();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(messages[random.nextInt(messages.length)]),
+              backgroundColor: AppTheme.primaryColor,
+              behavior: SnackBarBehavior.floating,
             ),
-            const SizedBox(height: 8),
-            custom_animations.AnimatedEntrance.fadeInRight(
-              child: Text(
-                'Scan food products to get detailed nutritional information and ingredients',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey[600],
+          );
+        },
+        splashColor: AppTheme.primaryLightColor.withOpacity(0.3),
+        highlightColor: AppTheme.primaryLightColor.withOpacity(0.1),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.white,
+                AppTheme.primaryLightColor.withOpacity(0.2),
+              ],
+            ),
+          ),
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  custom_animations.AnimatedEntrance.fadeInLeft(
+                    child: Text(
+                      'Welcome to Food Scanner',
+                      style:
+                          Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: AppTheme.primaryDarkColor,
+                              ),
                     ),
+                  ),
+                  const SizedBox(width: 8),
+                  Icon(
+                    Icons.emoji_food_beverage,
+                    color: AppTheme.primaryColor,
+                  )
+                      .animate(
+                        onPlay: (controller) => controller.repeat(),
+                      )
+                      .scale(
+                        duration: 2.seconds,
+                        begin: const Offset(1, 1),
+                        end: const Offset(1.2, 1.2),
+                      )
+                      .then()
+                      .scale(
+                        duration: 2.seconds,
+                        begin: const Offset(1.2, 1.2),
+                        end: const Offset(1, 1),
+                      ),
+                ],
               ),
-            ),
-          ],
+              const SizedBox(height: 16),
+              custom_animations.AnimatedEntrance.fadeInRight(
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryLightColor.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: AppTheme.primaryColor.withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Text(
+                    'Scan food products to get detailed nutritional information and ingredients',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppTheme.primaryDarkColor.withOpacity(0.7),
+                          fontWeight: FontWeight.w500,
+                        ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton.icon(
+                    icon: const Icon(Icons.arrow_forward, size: 16),
+                    label: const Text('Get Started'),
+                    onPressed: _navigateToScanScreen,
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppTheme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -629,51 +820,150 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget _buildScanButton() {
-    return Center(
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.primaryColor.withOpacity(0.1),
+            blurRadius: 15,
+            spreadRadius: 5,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
       child: Column(
         children: [
           custom_animations.AnimatedEntrance.fadeInUp(
-            child: SizedBox(height: 200, child: _buildLottieAnimation()),
-          ),
-          const SizedBox(height: 16),
-          custom_animations.AnimatedEntrance.popIn(
-            child: custom_animations.AnimatedButton(
-              onPressed: _navigateToScanScreen,
-              color: AppTheme.primaryColor,
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
+            child: SizedBox(
+              height: 180,
+              child: Stack(
+                alignment: Alignment.center,
                 children: [
-                  const Icon(Icons.document_scanner, color: Colors.white),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Scan Food Item',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                  // Background pattern
+                  CustomPaint(
+                    painter: _ScanCirclesPainter(),
+                    size: const Size(double.infinity, 180),
                   ),
+                  // Centered Lottie animation
+                  _buildLottieAnimation(),
                 ],
               ),
             ),
           ),
+          const SizedBox(height: 16),
+          custom_animations.AnimatedEntrance.popIn(
+            child: InkWell(
+              onTap: _navigateToScanScreen,
+              borderRadius: BorderRadius.circular(50),
+              splashColor: AppTheme.primaryLightColor,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      AppTheme.primaryColor,
+                      AppTheme.primaryDarkColor,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(50),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppTheme.primaryColor.withOpacity(0.4),
+                      blurRadius: 10,
+                      spreadRadius: 0,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.document_scanner, color: Colors.white),
+                    const SizedBox(width: 12),
+                    Text(
+                      'Scan Food Item',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    const Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.white,
+                      size: 16,
+                    ),
+                  ],
+                ),
+              )
+                  .animate(
+                    onPlay: (controller) => controller.repeat(),
+                  )
+                  .shimmer(
+                    duration: 3.seconds,
+                    color: Colors.white.withOpacity(0.2),
+                  ),
+            ),
+          ),
+          const SizedBox(height: 16),
         ],
       ),
     );
   }
 
   Widget _buildLottieAnimation() {
-    return Lottie.asset(
-      'assets/animations/scan_animation.json',
-      controller: _lottieController,
-      errorBuilder: (context, error, stackTrace) {
-        // Fallback to an icon if Lottie fails
-        return Icon(
-          Icons.document_scanner,
-          size: 100,
-          color: AppTheme.primaryColor,
-        );
-      },
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        // Pulsing circle behind animation
+        Container(
+          width: 120,
+          height: 120,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: AppTheme.primaryLightColor.withOpacity(0.3),
+          ),
+        )
+            .animate(
+              onPlay: (controller) => controller.repeat(),
+            )
+            .scale(
+              duration: 1.5.seconds,
+              begin: const Offset(1, 1),
+              end: const Offset(1.2, 1.2),
+              curve: Curves.easeInOut,
+            )
+            .then()
+            .scale(
+              duration: 1.5.seconds,
+              begin: const Offset(1.2, 1.2),
+              end: const Offset(1, 1),
+              curve: Curves.easeInOut,
+            ),
+
+        // Lottie animation
+        SizedBox(
+          width: 150,
+          height: 150,
+          child: Lottie.asset(
+            'assets/animations/scan_animation.json',
+            controller: _lottieController,
+            errorBuilder: (context, error, stackTrace) {
+              // Fallback to an icon if Lottie fails
+              return Icon(
+                Icons.document_scanner,
+                size: 80,
+                color: AppTheme.primaryColor,
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 
@@ -1060,7 +1350,7 @@ class _FoodPatternPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
-      ..color = Colors.white.withOpacity(0.15)
+      ..color = AppTheme.primaryColor.withOpacity(0.15)
       ..style = PaintingStyle.fill;
 
     final random = Random(42); // Fixed seed for consistent patterns
@@ -1072,10 +1362,25 @@ class _FoodPatternPainter extends CustomPainter {
       _drawCup,
     ];
 
+    // Add a subtle background pattern
+    final dotPaint = Paint()
+      ..color = AppTheme.primaryLightColor.withOpacity(0.1)
+      ..style = PaintingStyle.fill;
+
+    // Draw subtle dots in the background
+    for (int i = 0; i < 100; i++) {
+      final x = random.nextDouble() * size.width;
+      final y = random.nextDouble() * size.height;
+      final radius = 1 + random.nextDouble() * 2;
+
+      canvas.drawCircle(Offset(x, y), radius, dotPaint);
+    }
+
+    // Draw food icons
     for (int i = 0; i < 15; i++) {
       final x = random.nextDouble() * size.width;
       final y = random.nextDouble() * size.height;
-      final scale = 0.5 + random.nextDouble() * 1.0;
+      final scale = 0.4 + random.nextDouble() * 0.8;
       final iconIndex = random.nextInt(icons.length);
 
       canvas.save();
@@ -1177,4 +1482,44 @@ class _FoodPatternPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
+
+/// Custom painter for scan button circles
+class _ScanCirclesPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.0
+      ..color = AppTheme.primaryColor.withOpacity(0.2);
+
+    // Draw multiple circles
+    for (int i = 0; i < 5; i++) {
+      double radius = 20.0 + (i * 15.0);
+      canvas.drawCircle(
+        Offset(size.width / 2, size.height / 2),
+        radius,
+        paint,
+      );
+    }
+
+    // Draw some dots
+    final dotPaint = Paint()
+      ..style = PaintingStyle.fill
+      ..color = AppTheme.primaryLightColor.withOpacity(0.2);
+
+    final random = Random(42);
+    for (int i = 0; i < 30; i++) {
+      final angle = random.nextDouble() * 2 * pi;
+      final radius = 30 + random.nextDouble() * 80;
+      final x = size.width / 2 + radius * cos(angle);
+      final y = size.height / 2 + radius * sin(angle);
+      final dotSize = 1 + random.nextDouble() * 3;
+
+      canvas.drawCircle(Offset(x, y), dotSize, dotPaint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
