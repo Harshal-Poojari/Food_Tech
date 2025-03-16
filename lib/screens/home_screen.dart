@@ -755,11 +755,25 @@ class _HomeScreenState extends State<HomeScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         custom_animations.AnimatedEntrance.fadeInLeft(
-          child: Text(
-            'Features',
-            style: Theme.of(
-              context,
-            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          child: Row(
+            children: [
+              Text(
+                'Features',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.primaryDarkColor,
+                    ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                height: 4,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: AppTheme.accentColor,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ],
           ),
         ),
         const SizedBox(height: 16),
@@ -770,46 +784,74 @@ class _HomeScreenState extends State<HomeScreen>
             features.length,
             (index) => Card(
               margin: const EdgeInsets.only(bottom: 16),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: AppTheme.primaryLightColor.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(12),
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Colors.white,
+                      index.isEven
+                          ? AppTheme.primaryLightColor.withOpacity(0.1)
+                          : AppTheme.accentLightColor.withOpacity(0.1),
+                    ],
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: index.isEven
+                              ? AppTheme.primaryColor.withOpacity(0.2)
+                              : AppTheme.accentColor.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(
+                          features[index]['icon'] as IconData,
+                          color: index.isEven
+                              ? AppTheme.primaryColor
+                              : AppTheme.accentColor,
+                          size: 32,
+                        ),
                       ),
-                      child: Icon(
-                        features[index]['icon'] as IconData,
-                        color: AppTheme.primaryColor,
-                        size: 32,
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              features[index]['title'] as String,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: index.isEven
+                                        ? AppTheme.primaryDarkColor
+                                        : AppTheme.accentDarkColor,
+                                  ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              features[index]['description'] as String,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(color: Colors.grey[600]),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            features[index]['title'] as String,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            features[index]['description'] as String,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(color: Colors.grey[600]),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

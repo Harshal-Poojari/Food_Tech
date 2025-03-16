@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // Primary colors
-  static const Color primaryColor = Color(0xFF4CAF50);
-  static const Color primaryLightColor = Color(0xFF80E27E);
-  static const Color primaryDarkColor = Color(0xFF087F23);
+  // Primary colors - Blue theme (was green)
+  static const Color primaryColor = Color(0xFF2196F3);
+  static const Color primaryLightColor = Color(0xFF64B5F6);
+  static const Color primaryDarkColor = Color(0xFF1976D2);
 
-  // Accent colors
-  static const Color accentColor = Color(0xFFFF9800);
-  static const Color accentLightColor = Color(0xFFFFBE45);
-  static const Color accentDarkColor = Color(0xFFC77800);
+  // Accent colors - Orange theme (was orange)
+  static const Color accentColor = Color(0xFFF57C00);
+  static const Color accentLightColor = Color(0xFFFFB74D);
+  static const Color accentDarkColor = Color(0xFFE65100);
 
   // Background colors
   static const Color lightBackgroundColor = Color(0xFFF5F7FA);

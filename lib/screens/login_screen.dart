@@ -59,23 +59,54 @@ class _LoginScreenState extends State<LoginScreen> {
           // Stylish background with pattern
           _buildBackground(),
 
-          // App Bar
+          // App Bar with back button
           Positioned(
             top: 0,
             left: 0,
             right: 0,
-            child: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              iconTheme: const IconThemeData(color: Colors.white),
-              title: const Text(
-                'Login',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Row(
+                  children: [
+                    // Back button with animated effect
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back_ios_new,
+                            color: Colors.white),
+                        onPressed: () => Navigator.pop(context),
+                        tooltip: 'Back to Home',
+                      ),
+                    )
+                        .animate()
+                        .fadeIn(duration: 300.ms)
+                        .slideX(begin: -10, end: 0),
+                    const Spacer(),
+                    Text(
+                      'Login',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        shadows: [
+                          Shadow(
+                            offset: Offset(0, 1),
+                            blurRadius: 3,
+                            color: Color.fromARGB(100, 0, 0, 0),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Spacer(),
+                    // Empty space to balance the back button
+                    SizedBox(width: 48),
+                  ],
                 ),
               ),
-              centerTitle: true,
             ),
           ),
 
@@ -83,7 +114,8 @@ class _LoginScreenState extends State<LoginScreen> {
           SafeArea(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(
+                    top: 60.0, left: 16.0, right: 16.0, bottom: 16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -130,7 +162,18 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         // Base gradient
         Container(
-          decoration: BackgroundThemes.radialGradient,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppTheme.primaryLightColor,
+                AppTheme.primaryColor,
+                AppTheme.primaryDarkColor,
+              ],
+              stops: const [0.0, 0.5, 1.0],
+            ),
+          ),
         ),
 
         // Subtle pattern
@@ -647,39 +690,114 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Create Account'),
-        centerTitle: true,
-        backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 16),
-                  _buildHeader(),
-                  const SizedBox(height: 32),
-                  _buildRegisterForm(),
-                  const SizedBox(height: 32),
-                  _buildRegisterButton(),
-                  const SizedBox(height: 24),
-                  _buildOrDivider(),
-                  const SizedBox(height: 24),
-                  _buildSocialLogins(),
-                  const SizedBox(height: 32),
-                  _buildLoginLink(),
+      body: Stack(
+        children: [
+          // Background
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  AppTheme.primaryLightColor,
+                  AppTheme.primaryColor,
+                  AppTheme.primaryDarkColor,
                 ],
+                stops: const [0.0, 0.5, 1.0],
               ),
             ),
           ),
-        ),
+
+          // Pattern overlay
+          Opacity(
+            opacity: 0.1,
+            child: CustomPaint(
+              painter: DotsPatternPainter(),
+              size: Size.infinite,
+            ),
+          ),
+
+          // App Bar with back button
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Row(
+                  children: [
+                    // Back button with animated effect
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back_ios_new,
+                            color: Colors.white),
+                        onPressed: () => Navigator.pop(context),
+                        tooltip: 'Back to Login',
+                      ),
+                    )
+                        .animate()
+                        .fadeIn(duration: 300.ms)
+                        .slideX(begin: -10, end: 0),
+                    const Spacer(),
+                    Text(
+                      'Create Account',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        shadows: [
+                          Shadow(
+                            offset: Offset(0, 1),
+                            blurRadius: 3,
+                            color: Color.fromARGB(100, 0, 0, 0),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Spacer(),
+                    // Empty space to balance the back button
+                    SizedBox(width: 48),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          // Main content
+          SafeArea(
+            child: GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 60.0, left: 24.0, right: 24.0, bottom: 24.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 16),
+                      _buildHeader(),
+                      const SizedBox(height: 32),
+                      _buildRegisterForm(),
+                      const SizedBox(height: 32),
+                      _buildRegisterButton(),
+                      const SizedBox(height: 24),
+                      _buildOrDivider(),
+                      const SizedBox(height: 24),
+                      _buildSocialLogins(),
+                      const SizedBox(height: 32),
+                      _buildLoginLink(),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
