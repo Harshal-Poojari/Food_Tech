@@ -262,66 +262,71 @@ class _HomeScreenState extends State<HomeScreen>
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Food icon with rotation animation
-              Icon(
-                Icons.restaurant_menu,
-                color: AppTheme.primaryColor,
-                size: 24,
-              )
-                  .animate(
-                    onPlay: (controller) => controller.repeat(),
-                  )
-                  .rotate(
-                    duration: 3.seconds,
-                    begin: 0,
-                    end: 0.05,
-                    curve: Curves.easeInOut,
-                  )
-                  .then()
-                  .rotate(
-                    duration: 3.seconds,
-                    begin: 0.05,
-                    end: 0,
-                    curve: Curves.easeInOut,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Food icon with rotation animation
+                Icon(
+                  Icons.restaurant_menu,
+                  color: AppTheme.primaryColor,
+                  size: 24,
+                )
+                    .animate(
+                      onPlay: (controller) => controller.repeat(),
+                    )
+                    .rotate(
+                      duration: 3.seconds,
+                      begin: 0,
+                      end: 0.05,
+                      curve: Curves.easeInOut,
+                    )
+                    .then()
+                    .rotate(
+                      duration: 3.seconds,
+                      begin: 0.05,
+                      end: 0,
+                      curve: Curves.easeInOut,
+                    ),
+                const SizedBox(width: 8),
+                // Stylish text with individual character animations
+                Flexible(
+                  child: Wrap(
+                    children: 'Food Scanner'.split('').map((char) {
+                      return char == ' '
+                          ? const SizedBox(width: 8)
+                          : Text(
+                              char,
+                              style: TextStyle(
+                                color: AppTheme.primaryDarkColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            )
+                              .animate(
+                                onPlay: (controller) => controller.repeat(),
+                                delay: (0.1 * ('Food Scanner'.indexOf(char)))
+                                    .seconds,
+                              )
+                              .scaleXY(
+                                begin: 1.0,
+                                end: 1.1,
+                                duration: 2.seconds,
+                                curve: Curves.easeInOut,
+                              )
+                              .then()
+                              .scaleXY(
+                                begin: 1.1,
+                                end: 1.0,
+                                duration: 2.seconds,
+                                curve: Curves.easeInOut,
+                              );
+                    }).toList(),
                   ),
-              const SizedBox(width: 8),
-              // Stylish text with individual character animations
-              Wrap(
-                children: 'Food Scanner'.split('').map((char) {
-                  return char == ' '
-                      ? const SizedBox(width: 8)
-                      : Text(
-                          char,
-                          style: TextStyle(
-                            color: AppTheme.primaryDarkColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        )
-                          .animate(
-                            onPlay: (controller) => controller.repeat(),
-                            delay:
-                                (0.1 * ('Food Scanner'.indexOf(char))).seconds,
-                          )
-                          .scaleXY(
-                            begin: 1.0,
-                            end: 1.1,
-                            duration: 2.seconds,
-                            curve: Curves.easeInOut,
-                          )
-                          .then()
-                          .scaleXY(
-                            begin: 1.1,
-                            end: 1.0,
-                            duration: 2.seconds,
-                            curve: Curves.easeInOut,
-                          );
-                }).toList(),
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -373,14 +378,17 @@ class _HomeScreenState extends State<HomeScreen>
             children: [
               Row(
                 children: [
-                  custom_animations.AnimatedEntrance.fadeInLeft(
-                    child: Text(
-                      'Welcome to Food Scanner',
-                      style:
-                          Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: AppTheme.primaryDarkColor,
-                              ),
+                  Expanded(
+                    child: custom_animations.AnimatedEntrance.fadeInLeft(
+                      child: Text(
+                        'Welcome to Food Scanner',
+                        style:
+                            Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppTheme.primaryDarkColor,
+                                ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 8),
