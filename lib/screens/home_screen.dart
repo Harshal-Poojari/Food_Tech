@@ -286,7 +286,13 @@ class _HomeScreenState extends State<HomeScreen>
                 ListTile(
                   leading:
                       const Icon(Icons.login, color: AppTheme.primaryColor),
-                  title: const Text('Login'),
+                  title: const Text(
+                    'Login',
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                   onTap: () {
                     Navigator.pop(context);
                     _navigateToLoginScreen();
@@ -295,7 +301,13 @@ class _HomeScreenState extends State<HomeScreen>
                 ListTile(
                   leading: const Icon(Icons.person_add,
                       color: AppTheme.primaryColor),
-                  title: const Text('Register'),
+                  title: const Text(
+                    'Register',
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                   onTap: () {
                     Navigator.pop(context);
                     _navigateToRegisterScreen();
@@ -305,7 +317,13 @@ class _HomeScreenState extends State<HomeScreen>
               ],
               ListTile(
                 leading: const Icon(Icons.home, color: AppTheme.primaryColor),
-                title: const Text('Home'),
+                title: const Text(
+                  'Home',
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                 },
@@ -313,7 +331,13 @@ class _HomeScreenState extends State<HomeScreen>
               ListTile(
                 leading: const Icon(Icons.document_scanner,
                     color: AppTheme.primaryColor),
-                title: const Text('Scan Food'),
+                title: const Text(
+                  'Scan Food',
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   _navigateToScanScreen();
@@ -322,7 +346,13 @@ class _HomeScreenState extends State<HomeScreen>
               ListTile(
                 leading:
                     const Icon(Icons.history, color: AppTheme.primaryColor),
-                title: const Text('Scan History'),
+                title: const Text(
+                  'Scan History',
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   // Navigate to scan history
@@ -331,7 +361,13 @@ class _HomeScreenState extends State<HomeScreen>
               ListTile(
                 leading:
                     const Icon(Icons.add_alert, color: AppTheme.primaryColor),
-                title: const Text('My Allergens'),
+                title: const Text(
+                  'My Allergens',
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   // Navigate to allergens screen
@@ -341,7 +377,13 @@ class _HomeScreenState extends State<HomeScreen>
               ListTile(
                 leading:
                     const Icon(Icons.favorite, color: AppTheme.primaryColor),
-                title: const Text('Favorite Products'),
+                title: const Text(
+                  'Favorite Products',
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   // Navigate to favorites screen
@@ -350,7 +392,13 @@ class _HomeScreenState extends State<HomeScreen>
               ListTile(
                 leading:
                     const Icon(Icons.bar_chart, color: AppTheme.primaryColor),
-                title: const Text('Nutrition Insights'),
+                title: const Text(
+                  'Nutrition Insights',
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   // Navigate to nutrition insights screen
@@ -360,7 +408,13 @@ class _HomeScreenState extends State<HomeScreen>
               ListTile(
                 leading:
                     const Icon(Icons.settings, color: AppTheme.primaryColor),
-                title: const Text('Settings'),
+                title: const Text(
+                  'Settings',
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   // Navigate to settings screen
@@ -368,7 +422,13 @@ class _HomeScreenState extends State<HomeScreen>
               ),
               ListTile(
                 leading: const Icon(Icons.help, color: AppTheme.primaryColor),
-                title: const Text('Help & Support'),
+                title: const Text(
+                  'Help & Support',
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   // Navigate to help screen
@@ -378,7 +438,13 @@ class _HomeScreenState extends State<HomeScreen>
                 const Divider(),
                 ListTile(
                   leading: const Icon(Icons.logout, color: Colors.red),
-                  title: const Text('Logout'),
+                  title: const Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                   onTap: () {
                     Navigator.pop(context);
                     setState(() {
@@ -420,25 +486,49 @@ class _HomeScreenState extends State<HomeScreen>
           if (_isLoggedIn)
             Text(
               'Welcome, User',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                shadows: [
+                  Shadow(
+                    offset: Offset(0, 1),
+                    blurRadius: 3,
+                    color: Color.fromARGB(100, 0, 0, 0),
                   ),
+                ],
+              ),
             )
           else
             Text(
               'Welcome, Guest',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                shadows: [
+                  Shadow(
+                    offset: Offset(0, 1),
+                    blurRadius: 3,
+                    color: Color.fromARGB(100, 0, 0, 0),
                   ),
+                ],
+              ),
             ),
           if (!_isLoggedIn)
             Text(
               'Please login to sync your data',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.white.withOpacity(0.8),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                shadows: [
+                  Shadow(
+                    offset: Offset(0, 1),
+                    blurRadius: 2,
+                    color: Color.fromARGB(100, 0, 0, 0),
                   ),
+                ],
+              ),
             ),
         ],
       ),
