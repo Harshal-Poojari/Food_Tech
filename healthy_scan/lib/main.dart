@@ -6,6 +6,9 @@ import 'screens/profile_screen.dart';
 import 'screens/scan_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
+import 'screens/meal_plan_screen.dart';
+import 'screens/water_tracking_screen.dart';
+import 'screens/food_recommendations_screen.dart';
 import 'widgets/gradient_background.dart';
 import 'services/auth_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -89,6 +92,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     const HomeScreen(),
     const ScanScreen(),
     const FoodDiaryScreen(),
+    const MealPlanScreen(),
+    const WaterTrackingScreen(),
+    const FoodRecommendationsScreen(),
     const ProfileScreen(),
   ];
 
@@ -120,6 +126,21 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               icon: Icon(Icons.book_outlined),
               selectedIcon: Icon(Icons.book),
               label: 'Diary',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.calendar_today_outlined),
+              selectedIcon: Icon(Icons.calendar_today),
+              label: 'Meal Plan',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.water_drop_outlined),
+              selectedIcon: Icon(Icons.water_drop),
+              label: 'Water',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.recommend_outlined),
+              selectedIcon: Icon(Icons.recommend),
+              label: 'Recommend',
             ),
             NavigationDestination(
               icon: Icon(Icons.person_outline),

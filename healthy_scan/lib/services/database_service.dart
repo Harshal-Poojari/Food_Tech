@@ -380,6 +380,121 @@ class DatabaseService {
     );
   }
 
+  // Document operations
+  Future<void> setDocument(String path, Map<String, dynamic> data) async {
+    final pathParts = path.split('/');
+    if (pathParts.length != 2) {
+      throw ArgumentError('Path must be in format: collection/documentId');
+    }
+
+    final collection = pathParts[0];
+    final documentId = pathParts[1];
+
+    await _withTransaction((conn) async {
+      // Check if table exists
+      final tables = await conn.query(
+        "SHOW TABLES LIKE ?",
+        [collection],
+      );
+
+      // Create table if it doesn't exist
+      if (tables.isEmpty) {
+        await conn.query('''
+          CREATE TABLE $collection (
+            id VARCHAR(255) PRIMARY KEY,
+            data JSON NOT NULL,
+            created_at DATETIME NOT NULL,
+            updated_at DATETIME NOT NULL
+          )
+        ''');
+      }
+
+      // Insert or update document
+      await conn.query('''
+        INSERT INTO $collection (id, data, created_at, updated_at)
+        VALUES (?, ?, NOW(), NOW())
+        ON DUPLICATE KEY UPDATE
+          data = VALUES(data),
+          updated_at = VALUES(updated_at)
+      ''', [documentId, jsonEncode(data)]);
+    });
+  }
+
+  Future<Map<String, dynamic>?> getDocument(String path) async {
+    final pathParts = path.split('/');
+    if (pathParts.length != 2) {
+      throw ArgumentError('Path must be in format: collection/documentId');
+    }
+
+    final collection = pathParts[0];
+    final documentId = pathParts[1];
+
+    final conn = await connection;
+    
+    // Check if table exists
+    final tables = await conn.query(
+      "SHOW TABLES LIKE ?",
+      [collection],
+    );
+
+    if (tables.isEmpty) {
+      return null;
+    }
+
+    final results = await conn.query(
+      'SELECT data FROM $collection WHERE id = ?',
+      [documentId],
+    );
+
+    if (results.isEmpty) {
+      return null;
+    }
+
+    return jsonDecode(results.first['data'].toString());
+  }
+
+  Future<List<Map<String, dynamic>>> getCollection(String collection, {
+    String? whereField,
+    dynamic whereValue,
+    String? orderBy,
+    bool descending = false,
+    int? limit,
+  }) async {
+    final conn = await connection;
+
+    // Check if table exists
+    final tables = await conn.query(
+      "SHOW TABLES LIKE ?",
+      [collection],
+    );
+
+    if (tables.isEmpty) {
+      return [];
+    }
+
+    var query = 'SELECT data FROM $collection';
+    final params = <dynamic>[];
+
+    if (whereField != null && whereValue != null) {
+      query += ' WHERE JSON_EXTRACT(data, ?) = ?';
+      params.add('\$.$whereField');
+      params.add(jsonEncode(whereValue));
+    }
+
+    if (orderBy != null) {
+      query += ' ORDER BY JSON_EXTRACT(data, ?) ${descending ? 'DESC' : 'ASC'}';
+      params.add('\$.$orderBy');
+    }
+
+    if (limit != null) {
+      query += ' LIMIT ?';
+      params.add(limit);
+    }
+
+    final results = await conn.query(query, params);
+    return results.map((row) => jsonDecode(row['data'].toString()) as Map<String, dynamic>).toList();
+  }
+
   // Transaction handling
   Future<T> _withTransaction<T>(
       Future<T> Function(MySqlConnection conn) action) async {

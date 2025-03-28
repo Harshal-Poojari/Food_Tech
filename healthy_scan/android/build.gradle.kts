@@ -1,3 +1,7 @@
+plugins {
+    kotlin("jvm") version "1.9.20" // Ensure a proper Kotlin version is specified
+}
+
 allprojects {
     repositories {
         google()
@@ -5,16 +9,17 @@ allprojects {
     }
 }
 
+// Define new build directory path correctly
 val newBuildDir = rootProject.layout.buildDirectory.dir("../../build")
-rootProject.layout.buildDirectory.set(newBuildDir)
+rootProject.buildDir = newBuildDir.get().asFile
+
 subprojects {
     afterEvaluate {
-        // Directly set the build directory without mapping to prevent circular dependency
-        project.buildDir = newBuildDir.get().asFile.resolve(healthy_scan)
+        buildDir = rootProject.buildDir.resolve(name)
     }
 }
 
-// Ensure the clean task deletes the correct directory
-tasks.register<Delete>("clean") {
-    delete(rootProject.layout.buildDirectory.get().asFile)
+// Ensure the clean task correctly deletes the build directory
+tasks.named<Delete>("clean") {
+    delete(rootProject.buildDir)
 }

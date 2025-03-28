@@ -4,7 +4,7 @@ import 'food_item.dart' as food_model;
 enum MealType { breakfast, lunch, dinner, snack }
 
 class NutritionInfo {
-  final double calories;
+  final int calories;
   final double protein;
   final double carbs;
   final double fat;
@@ -43,7 +43,7 @@ class FoodDiaryEntry {
   NutritionInfo get actualNutrition {
     final baseNutrition = foodItem.nutritionInfo;
     return NutritionInfo(
-      calories: baseNutrition.calories * servingAmount,
+      calories: (baseNutrition.calories * servingAmount).round(),
       protein: baseNutrition.protein * servingAmount,
       carbs: baseNutrition.carbs * servingAmount,
       fat: baseNutrition.fat * servingAmount,

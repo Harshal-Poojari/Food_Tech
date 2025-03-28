@@ -190,10 +190,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   HealthStatsCard(
                                     height: 175.0,
                                     weight: 70.0,
-                                    bmi: _userProfile!.stats.nutritionAverages['calories']! / (_userProfile!.stats.nutritionAverages['calories']! * 0.01),
+                                    bmi: _userProfile!.stats
+                                            .nutritionAverages['calories']! /
+                                        (_userProfile!.stats.nutritionAverages[
+                                                'calories']! *
+                                            0.01),
                                     bmiCategory: 'Normal',
-                                    dailyCalorieTarget:
-                                        _userProfile!.preferences.dailyCalorieTarget,
+                                    dailyCalorieTarget: _userProfile!
+                                        .preferences.dailyCalorieTarget,
                                   ),
                                 ],
                               ),
@@ -225,9 +229,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   _buildSectionHeader('Dietary Preferences'),
                                   const SizedBox(height: 12),
                                   PreferencesCard(
-                                    dietaryPreferences:
-                                        _userProfile!.preferences.dietaryRestrictions,
-                                    allergies: _userProfile!.preferences.allergens,
+                                    dietaryPreferences: _userProfile!
+                                        .preferences.dietaryRestrictions,
+                                    allergies:
+                                        _userProfile!.preferences.allergens,
                                     healthGoals: {
                                       'weight_loss': true,
                                       'build_muscle': true,

@@ -6,6 +6,7 @@ class UserPreferences {
   final List<String> allergens;
   final bool darkMode;
   final Map<String, bool> notifications;
+  final List<String> favoriteCategories;
 
   UserPreferences({
     this.dailyCalorieTarget = 2000,
@@ -17,6 +18,7 @@ class UserPreferences {
       'scanReminders': true,
       'weeklyReports': true,
     },
+    this.favoriteCategories = const [],
   });
 
   factory UserPreferences.fromJson(Map<String, dynamic> json) {
@@ -30,6 +32,7 @@ class UserPreferences {
         'scanReminders': true,
         'weeklyReports': true,
       }),
+      favoriteCategories: List<String>.from(json['favoriteCategories'] ?? []),
     );
   }
 
@@ -40,6 +43,7 @@ class UserPreferences {
       'allergens': allergens,
       'darkMode': darkMode,
       'notifications': notifications,
+      'favoriteCategories': favoriteCategories,
     };
   }
 
@@ -49,6 +53,7 @@ class UserPreferences {
     List<String>? allergens,
     bool? darkMode,
     Map<String, bool>? notifications,
+    List<String>? favoriteCategories,
   }) {
     return UserPreferences(
       dailyCalorieTarget: dailyCalorieTarget ?? this.dailyCalorieTarget,
@@ -56,6 +61,7 @@ class UserPreferences {
       allergens: allergens ?? this.allergens,
       darkMode: darkMode ?? this.darkMode,
       notifications: notifications ?? this.notifications,
+      favoriteCategories: favoriteCategories ?? this.favoriteCategories,
     );
   }
 }
@@ -136,6 +142,8 @@ class UserProfile {
   final DateTime createdAt;
   final UserPreferences preferences;
   final UserStats stats;
+
+  String get uid => id;
 
   UserProfile({
     required this.id,
